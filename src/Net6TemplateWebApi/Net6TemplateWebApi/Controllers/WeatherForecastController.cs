@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Net6TemplateWebApi.Infrastructure.ActionResults;
+using Net6TemplateWebApi.Infrastructure.Exceptions;
 using Net6TemplateWebApi.SDK.Requests;
 using Net6TemplateWebApi.SDK.Responses;
 
@@ -21,16 +23,19 @@ namespace Net6TemplateWebApi.Controllers
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get(int id)
+        public ApiResponse<IEnumerable<WeatherForecast>> Get(int id)
         {
+            throw new Net6TemplateWebApiDomainException();
             _logger.LogInformation("getForecast");
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            var data = Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),
                 TemperatureC = Random.Shared.Next(-20, 55),
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
-            .ToArray();
+.ToArray();
+            return ApiResponse<IEnumerable<WeatherForecast>>.Success(data);
+
         }
 
         [HttpPost(Name = "GetWeatherForecast")]

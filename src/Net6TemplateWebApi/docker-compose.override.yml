@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+  seq:
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - "5340:80"
+
+  net6templatewebapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - GRPC_PORT=81
+      - PORT=80
+      - Serilog__SeqServerUrl=localhost:5340
+    ports:
+      - "5001:80"

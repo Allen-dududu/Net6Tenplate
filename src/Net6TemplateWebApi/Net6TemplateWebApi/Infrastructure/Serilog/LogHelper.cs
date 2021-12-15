@@ -4,7 +4,7 @@ namespace Net6TemplateWebApi.Infrastructure.Serilog
 {
     public static class LogHelper
     {
-        public static void EnrichFromRequest(
+        public static async void EnrichFromRequest(
             IDiagnosticContext diagnosticContext, HttpContext httpContext)
         {
             var request = httpContext.Request;
@@ -24,6 +24,7 @@ namespace Net6TemplateWebApi.Infrastructure.Serilog
                 diagnosticContext.Set("EndpointName", endpoint.DisplayName);
             }
         }
+
         public static LogEventLevel ExcludeHealthChecks(HttpContext ctx, double _, Exception ex) =>
         ex != null
             ? LogEventLevel.Error
@@ -87,6 +88,19 @@ namespace Net6TemplateWebApi.Infrastructure.Serilog
             }
             // No endpoint, so not a health check endpoint
             return false;
+        }
+
+        private static async Task<string> ReadBodyFromRequest(HttpRequest request)
+        {
+            // Ensure the request's body can be read multiple times (for the next middlewares in the pipeline).
+            request.EnableBuffering();
+
+            using var streamReader = new StreamReader(request.Body, leaveOpen: true);
+            var requestBody = await streamReader.ReadToEndAsync();
+
+            // Reset the request's body stream position for next middleware in the pipeline.
+            request.Body.Position = 0;
+            return requestBody;
         }
     }
 }

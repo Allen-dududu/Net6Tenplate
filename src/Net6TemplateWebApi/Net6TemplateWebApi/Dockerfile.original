@@ -7,7 +7,6 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["Net6TemplateWebApi/Net6TemplateWebApi.csproj", "Net6TemplateWebApi/"]
-COPY ["Net6TemplateWebApi.SDK/Net6TemplateWebApi.SDK.csproj", "Net6TemplateWebApi.SDK/"]
 RUN dotnet restore "Net6TemplateWebApi/Net6TemplateWebApi.csproj"
 COPY . .
 WORKDIR "/src/Net6TemplateWebApi"
