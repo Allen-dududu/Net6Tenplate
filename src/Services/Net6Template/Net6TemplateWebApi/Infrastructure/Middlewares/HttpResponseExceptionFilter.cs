@@ -26,6 +26,7 @@ namespace Net6TemplateWebApi.Infrastructure.Middlewares
             {
                 var errorId= Guid.NewGuid().ToString();
                 _diagnosticContext.Set("ErrorId", errorId);
+                _diagnosticContext.Set("ErrorMessage", error);
 
                 var response = context.Response;
                 response.ContentType = "application/json";

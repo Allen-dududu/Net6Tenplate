@@ -2,6 +2,8 @@
 using Net6TemplateWebApi.Infrastructure.Filters;
 using Net6TemplateWebApi.Infrastructure.Middlewares;
 using Net6TemplateWebApi.Infrastructure.Serilog;
+using Net6TemplateWebApi.Repertory;
+using Polly.Extensions.Http;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace Net6TemplateWebApi.template.Api;
@@ -17,6 +19,29 @@ public class Startup
     // This method gets called by the runtime. Use this method to add services to the container.
     public virtual IServiceProvider ConfigureServices(IServiceCollection services)
     {
+
+        var retryPolicy = HttpPolicyExtensions
+            .HandleTransientHttpError()
+            .WaitAndRetryAsync(new[]
+            {
+                TimeSpan.FromSeconds(1),
+                TimeSpan.FromSeconds(5),
+                TimeSpan.FromSeconds(10)
+            });
+
+        var noOpPolicy = Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>();
+
+        services.AddHttpClient(/* etc */)
+            // Select a policy based on the request: retry for Get requests, noOp for other http verbs.
+            .AddPolicyHandler(request => request.Method == HttpMethod.Get ? retryPolicy : noOpPolicy);
+
+        services.AddHttpClient<ITodoRepertory>(client =>
+        {
+            client.BaseAddress = new Uri("https://avatars.githubusercontent.com/");
+        });
+
+        services.AddSingleton<ITodoRepertory>( sb => new TodoRepertory(sb.GetRequiredService<IHttpClientFactory>()));
+
         //RegisterAppInsights(services);
 
         services.AddControllers(options =>

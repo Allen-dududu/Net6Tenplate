@@ -33,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Net6TemplateWebApi.Repertory\Net6TemplateWebApi.Repertory.csproj" />
     <ProjectReference Include="..\Net6TemplateWebApi.SDK\Net6TemplateWebApi.SDK.csproj" />
   </ItemGroup>
 
