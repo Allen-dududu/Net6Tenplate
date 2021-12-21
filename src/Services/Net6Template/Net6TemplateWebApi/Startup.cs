@@ -1,5 +1,6 @@
 ﻿using Net6TemplateWebApi.Controllers;
 using Net6TemplateWebApi.Infrastructure.Filters;
+using Net6TemplateWebApi.Infrastructure.Middlewares;
 using Net6TemplateWebApi.Infrastructure.Serilog;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -21,7 +22,6 @@ public class Startup
         services.AddControllers(options =>
         {
             options.Filters.Add(typeof(ValidateModelStateFilter));
-            options.Filters.Add<SerilogLoggingActionFilter>();
 
         }) // Added for functional tests
            // 当controller 在其他dll中
@@ -143,6 +143,12 @@ public class Startup
             app.UsePathBase(pathBase);
         }
 
+        app.UseSerilogRequestLogging(opts => {
+            opts.EnrichDiagnosticContext = LogHelper.EnrichFromRequest;
+            opts.GetLevel = LogHelper.ExcludeHealthChecks;
+        });
+
+        app.UseMiddleware<ErrorHandlerMiddleware>();
         app.UseSwagger()
             .UseSwaggerUI(setup =>
             {
@@ -156,12 +162,6 @@ public class Startup
         ConfigureAuth(app);
 
         app.UseStaticFiles();
-
-        app.UseSerilogRequestLogging(opts => {
-            opts.EnrichDiagnosticContext = LogHelper.EnrichFromRequest;
-            opts.GetLevel = LogHelper.ExcludeHealthChecks;
-        });
-
 
         app.UseEndpoints(endpoints =>
         {

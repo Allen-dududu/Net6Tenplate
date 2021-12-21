@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  seq:
+    image: datalust/seq:latest
+
+  net6templatewebapi:
+    image: ${DOCKER_REGISTRY-}net6templatewebapi
+    build:
+      context: .
+      dockerfile: Net6TemplateWebApi/Dockerfile
