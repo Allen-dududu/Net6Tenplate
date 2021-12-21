@@ -1,9 +1,10 @@
+using Microsoft.Extensions.Configuration;
 using Net6TemplateWebApi.template.Api;
 using Serilog;
 using Serilog.Events;
 using Serilog.Formatting.Compact;
 
-var configuration = GetConfiguration();
+var configuration = GetConfiguration(args);
 
 Log.Logger = CreateSerilogLogger(configuration);
 
@@ -74,12 +75,13 @@ Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
         .CreateLogger();
 }
 
-IConfiguration GetConfiguration()
+IConfiguration GetConfiguration(string[] arg)
 {
     var builder = new ConfigurationBuilder()
         .SetBasePath(Directory.GetCurrentDirectory())
         .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-        .AddEnvironmentVariables();
+        .AddEnvironmentVariables()
+        .AddCommandLine(arg);
 
     return builder.Build();
 }
