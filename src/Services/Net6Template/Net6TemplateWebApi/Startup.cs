@@ -3,6 +3,7 @@ using Net6TemplateWebApi.Infrastructure.Filters;
 using Net6TemplateWebApi.Infrastructure.Middlewares;
 using Net6TemplateWebApi.Infrastructure.Serilog;
 using Net6TemplateWebApi.Repertory;
+using Polly;
 using Polly.Extensions.Http;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -31,16 +32,20 @@ public class Startup
 
         var noOpPolicy = Policy.NoOpAsync().AsAsyncPolicy<HttpResponseMessage>();
 
-        services.AddHttpClient(/* etc */)
+        services.AddHttpClient("demo")
             // Select a policy based on the request: retry for Get requests, noOp for other http verbs.
-            .AddPolicyHandler(request => request.Method == HttpMethod.Get ? retryPolicy : noOpPolicy);
+            .AddPolicyHandler(request => request.Method == HttpMethod.Get ? retryPolicy : noOpPolicy)
+            .AddTransientHttpErrorPolicy(builder => builder.CircuitBreakerAsync(
+                    handledEventsAllowedBeforeBreaking: 3,
+                    durationOfBreak: TimeSpan.FromSeconds(30)
+                    ));
 
         services.AddHttpClient<ITodoRepertory>(client =>
         {
             client.BaseAddress = new Uri("https://avatars.githubusercontent.com/");
         });
 
-        services.AddSingleton<ITodoRepertory>( sb => new TodoRepertory(sb.GetRequiredService<IHttpClientFactory>()));
+        services.AddSingleton<ITodoRepertory, TodoRepertory>();
 
         //RegisterAppInsights(services);
 
@@ -168,7 +173,8 @@ public class Startup
             app.UsePathBase(pathBase);
         }
 
-        app.UseSerilogRequestLogging(opts => {
+        app.UseSerilogRequestLogging(opts =>
+        {
             opts.EnrichDiagnosticContext = LogHelper.EnrichFromRequest;
             opts.GetLevel = LogHelper.ExcludeHealthChecks;
         });

@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Net6TemplateWebApi", "Servi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Net6TemplateWebApi.SDK", "Services\Net6Template\Net6TemplateWebApi.SDK\Net6TemplateWebApi.SDK.csproj", "{17CA0DA1-B029-4D2D-99F1-AE116855CE48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Net6TemplateWebApi.Repertory", "..\Net6TemplateWebApi.Repertory\Net6TemplateWebApi.Repertory.csproj", "{73E55D44-DE11-42F7-BDE8-79DFC72BB53A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Net6TemplateWebApi.Repertory", "Services\Net6Template\Net6TemplateWebApi.Repertory\Net6TemplateWebApi.Repertory.csproj", "{A812BFD3-596B-4016-9845-21B476B40BA7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,10 +33,10 @@ Global
 		{17CA0DA1-B029-4D2D-99F1-AE116855CE48}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17CA0DA1-B029-4D2D-99F1-AE116855CE48}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17CA0DA1-B029-4D2D-99F1-AE116855CE48}.Release|Any CPU.Build.0 = Release|Any CPU
-		{73E55D44-DE11-42F7-BDE8-79DFC72BB53A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{73E55D44-DE11-42F7-BDE8-79DFC72BB53A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{73E55D44-DE11-42F7-BDE8-79DFC72BB53A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{73E55D44-DE11-42F7-BDE8-79DFC72BB53A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A812BFD3-596B-4016-9845-21B476B40BA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A812BFD3-596B-4016-9845-21B476B40BA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A812BFD3-596B-4016-9845-21B476B40BA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A812BFD3-596B-4016-9845-21B476B40BA7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -45,7 +45,7 @@ Global
 		{699FF6A5-493B-4835-8A18-9AB23C124174} = {2F9937A1-1D18-4299-97BD-F4BC89ADE8FE}
 		{C0F04E55-8FA4-4429-BD01-7A591BA0F030} = {699FF6A5-493B-4835-8A18-9AB23C124174}
 		{17CA0DA1-B029-4D2D-99F1-AE116855CE48} = {699FF6A5-493B-4835-8A18-9AB23C124174}
-		{73E55D44-DE11-42F7-BDE8-79DFC72BB53A} = {699FF6A5-493B-4835-8A18-9AB23C124174}
+		{A812BFD3-596B-4016-9845-21B476B40BA7} = {699FF6A5-493B-4835-8A18-9AB23C124174}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5F6502E8-BBC6-4CB1-969A-60BF16DA923A}
