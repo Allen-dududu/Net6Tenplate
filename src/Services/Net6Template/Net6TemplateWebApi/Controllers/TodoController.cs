@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Net6TemplateWebApi.Infrastructure.ActionResults;
+﻿using Net6TemplateWebApi.Infrastructure.ActionResults;
 using Net6TemplateWebApi.Repertory;
 
 namespace Net6TemplateWebApi.Controllers
