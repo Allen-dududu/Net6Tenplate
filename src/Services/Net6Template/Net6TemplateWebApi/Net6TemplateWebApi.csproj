@@ -34,6 +34,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\EventBus\EventBusRabbitMQ\EventBusRabbitMQ.csproj" />
+    <ProjectReference Include="..\Net6TemplateWebApi.Repertory\Net6TemplateWebApi.Repertory.csproj" />
     <ProjectReference Include="..\Net6TemplateWebApi.SDK\Net6TemplateWebApi.SDK.csproj" />
   </ItemGroup>
 

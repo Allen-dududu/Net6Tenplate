@@ -27,7 +27,6 @@ finally
 {
     Log.CloseAndFlush();
 }
-
 IWebHost BuildWebHost(IConfiguration configuration, string[] args) =>
     WebHost.CreateDefaultBuilder(args)
         .CaptureStartupErrors(false)

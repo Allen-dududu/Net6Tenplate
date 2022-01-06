@@ -1,10 +1,15 @@
-﻿using Net6TemplateWebApi.Controllers;
+﻿using Common.Util;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
+using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
+using Net6TemplateWebApi.Controllers;
 using Net6TemplateWebApi.Infrastructure.Filters;
 using Net6TemplateWebApi.Infrastructure.Middlewares;
 using Net6TemplateWebApi.Infrastructure.Serilog;
 using Net6TemplateWebApi.Repertory;
 using Polly;
 using Polly.Extensions.Http;
+using RabbitMQ.Client;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace Net6TemplateWebApi.template.Api;
@@ -109,37 +114,37 @@ public class Startup
         //});
 
 
-        //services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
-        //{
-        //    var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
+        services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
+        {
+            var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
 
-        //    var factory = new ConnectionFactory()
-        //    {
-        //        HostName = Configuration["EventBusConnection"],
-        //        DispatchConsumersAsync = true
-        //    };
+            var factory = new ConnectionFactory()
+            {
+                HostName = Configuration["EventBusConnection"],
+                DispatchConsumersAsync = true
+            };
 
-        //    if (!string.IsNullOrEmpty(Configuration["EventBusUserName"]))
-        //    {
-        //        factory.UserName = Configuration["EventBusUserName"];
-        //    }
+            if (!string.IsNullOrEmpty(Configuration["EventBusUserName"]))
+            {
+                factory.UserName = Configuration["EventBusUserName"];
+            }
 
-        //    if (!string.IsNullOrEmpty(Configuration["EventBusPassword"]))
-        //    {
-        //        factory.Password = Configuration["EventBusPassword"];
-        //    }
+            if (!string.IsNullOrEmpty(Configuration["EventBusPassword"]))
+            {
+                factory.Password = Configuration["EventBusPassword"];
+            }
 
-        //    var retryCount = 5;
-        //    if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
-        //    {
-        //        retryCount = int.Parse(Configuration["EventBusRetryCount"]);
-        //    }
+            var retryCount = 5;
+            if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
+            {
+                retryCount = int.Parse(Configuration["EventBusRetryCount"]);
+            }
 
-        //    return new DefaultRabbitMQPersistentConnection(factory, logger, retryCount);
-        //});
+            return new DefaultRabbitMQPersistentConnection(factory, logger, retryCount);
+        });
 
 
-        //RegisterEventBus(services);
+        RegisterEventBus(services);
 
 
         services.AddCors(options =>
@@ -158,7 +163,12 @@ public class Startup
         var container = new ContainerBuilder();
         container.Populate(services);
 
-        return new AutofacServiceProvider(container.Build());
+        var serviceProvider = new AutofacServiceProvider(container.Build());
+
+        // 把 serviceProvidor 设置成静态变量
+        services.AddGlobalContext(serviceProvider, Configuration);
+
+        return serviceProvider;
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -223,7 +233,7 @@ public class Startup
             });
         });
 
-        //ConfigureEventBus(app);
+        ConfigureEventBus(app);
     }
 
     //private void RegisterAppInsights(IServiceCollection services)
@@ -258,40 +268,40 @@ public class Startup
         app.UseAuthorization();
     }
 
-    //private void RegisterEventBus(IServiceCollection services)
-    //{
+    private void RegisterEventBus(IServiceCollection services)
+    {
 
-    //    services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
-    //    {
-    //        var subscriptionClientName = Configuration["SubscriptionClientName"];
-    //        var rabbitMQPersistentConnection = sp.GetRequiredService<IRabbitMQPersistentConnection>();
-    //        var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
-    //        var logger = sp.GetRequiredService<ILogger<EventBusRabbitMQ>>();
-    //        var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
+        services.AddSingleton<IEventBus, EventBusRabbitMQ>(sp =>
+        {
+            var subscriptionClientName = Configuration["SubscriptionClientName"];
+            var rabbitMQPersistentConnection = sp.GetRequiredService<IRabbitMQPersistentConnection>();
+            var iLifetimeScope = sp.GetRequiredService<ILifetimeScope>();
+            var logger = sp.GetRequiredService<ILogger<EventBusRabbitMQ>>();
+            var eventBusSubcriptionsManager = sp.GetRequiredService<IEventBusSubscriptionsManager>();
 
-    //        var retryCount = 5;
-    //        if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
-    //        {
-    //            retryCount = int.Parse(Configuration["EventBusRetryCount"]);
-    //        }
+            var retryCount = 5;
+            if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
+            {
+                retryCount = int.Parse(Configuration["EventBusRetryCount"]);
+            }
 
-    //        return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, subscriptionClientName, retryCount);
-    //    });
+            return new EventBusRabbitMQ(rabbitMQPersistentConnection, logger, iLifetimeScope, eventBusSubcriptionsManager, subscriptionClientName, retryCount);
+        });
 
 
-    //    services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
+        services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
 
-    //    services.AddTransient<ProductPriceChangedIntegrationEventHandler>();
-    //    services.AddTransient<OrderStartedIntegrationEventHandler>();
-    //}
+        //services.AddTransient<ProductPriceChangedIntegrationEventHandler>();
+        //services.AddTransient<OrderStartedIntegrationEventHandler>();
+    }
 
-    //private void ConfigureEventBus(IApplicationBuilder app)
-    //{
-    //    var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+    private void ConfigureEventBus(IApplicationBuilder app)
+    {
+        var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
 
-    //    eventBus.Subscribe<ProductPriceChangedIntegrationEvent, ProductPriceChangedIntegrationEventHandler>();
-    //    eventBus.Subscribe<OrderStartedIntegrationEvent, OrderStartedIntegrationEventHandler>();
-    //}
+        //eventBus.Subscribe<ProductPriceChangedIntegrationEvent, ProductPriceChangedIntegrationEventHandler>();
+        //eventBus.Subscribe<OrderStartedIntegrationEvent, OrderStartedIntegrationEventHandler>();
+    }
 }
 
 public static class CustomExtensionMethods

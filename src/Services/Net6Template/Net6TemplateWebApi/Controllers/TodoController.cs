@@ -8,6 +8,8 @@ namespace Net6TemplateWebApi.Controllers
     public class TodoController : ControllerBase
     {
         private readonly ITodoRepertory _todoRepertory;
+
+
         public TodoController(ITodoRepertory todoRepertory)
         {
             _todoRepertory = todoRepertory;
