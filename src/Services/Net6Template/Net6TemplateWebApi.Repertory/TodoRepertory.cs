@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Net6TemplateWebApi.Repertory
+namespace Net6.Template.Repertory
 {
     public class TodoRepertory : ITodoRepertory
     {

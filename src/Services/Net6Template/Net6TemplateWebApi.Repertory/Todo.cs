@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Net6TemplateWebApi.Repertory
+namespace Net6.Template.Repertory
 {
     public class Todo
     {

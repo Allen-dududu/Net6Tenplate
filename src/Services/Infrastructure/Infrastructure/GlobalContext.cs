@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Common.Util
+namespace Net6.Common.Util
 {
     public static class GlobalContext
     {
@@ -21,7 +21,7 @@ namespace Common.Util
 
         public static IConfiguration Configuration { get; set; }
 
-        public static IServiceCollection AddGlobalContext(this IServiceCollection services,IServiceProvider serviceProvider, IConfiguration configuration)
+        public static IServiceCollection AddGlobalContext(this IServiceCollection services, IServiceProvider serviceProvider, IConfiguration configuration)
         {
             Services = services;
             ServiceProvider = serviceProvider;

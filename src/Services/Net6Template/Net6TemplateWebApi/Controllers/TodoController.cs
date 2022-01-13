@@ -1,5 +1,5 @@
 ﻿using Net6TemplateWebApi.Infrastructure.ActionResults;
-using Net6TemplateWebApi.Repertory;
+using Net6.Template.Repertory;
 
 namespace Net6TemplateWebApi.Controllers
 {
@@ -8,18 +8,19 @@ namespace Net6TemplateWebApi.Controllers
     public class TodoController : ControllerBase
     {
         private readonly ITodoRepertory _todoRepertory;
+        private readonly IOptions<Net6TemplateWebApiSettings> _config;
 
-
-        public TodoController(ITodoRepertory todoRepertory)
+        public TodoController(ITodoRepertory todoRepertory, IOptions<Net6TemplateWebApiSettings> config)
         {
             _todoRepertory = todoRepertory;
+            _config = config;
         }
         [HttpGet]
-        public async Task<ApiResponse<Todo>> getAsync()
+        public async Task<ApiResponse<dynamic>> getAsync()
         {
             var result = await _todoRepertory.Get();
 
-            return  ApiResponse<Todo>.Success(result);
+            return  ApiResponse<dynamic>.Success(new { result, _config.Value.ConnectionString});
         }
     }
 }

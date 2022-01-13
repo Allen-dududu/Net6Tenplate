@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Net6TemplateWebApi.SDK.Requests
+namespace Net6.Template.SDK.Requests
 {
     public class PostForecast
     {

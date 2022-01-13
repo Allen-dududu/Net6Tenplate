@@ -1,16 +1,16 @@
-﻿using Common.Util;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
+﻿using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
 using Net6TemplateWebApi.Controllers;
 using Net6TemplateWebApi.Infrastructure.Filters;
 using Net6TemplateWebApi.Infrastructure.Middlewares;
 using Net6TemplateWebApi.Infrastructure.Serilog;
-using Net6TemplateWebApi.Repertory;
+using Net6.Template.Repertory;
 using Polly;
 using Polly.Extensions.Http;
 using RabbitMQ.Client;
 using System.IdentityModel.Tokens.Jwt;
+using Net6.Common.Util;
 
 namespace Net6TemplateWebApi.template.Api;
 public class Startup
@@ -97,7 +97,13 @@ public class Startup
 
         services.AddCustomHealthCheck(Configuration);
 
-        services.Configure<Net6TemplateWebApiSettings>(Configuration);
+        /// 1
+        services.Configure<Net6TemplateWebApiSettings>(Configuration.GetSection(Net6TemplateWebApiSettings.Net6TemplateWebApiSettingsName));
+
+        /// 2
+        //services.AddOptions<Net6TemplateWebApiSettings>()
+        //      .Bind(Configuration.GetSection("ConnectionString"))
+        //      .ValidateDataAnnotations();
 
         //By connecting here we are making sure that our service
         //cannot start until redis is ready. This might slow down startup,
@@ -114,37 +120,37 @@ public class Startup
         //});
 
 
-        services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
-        {
-            var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
+        //services.AddSingleton<IRabbitMQPersistentConnection>(sp =>
+        //{
+        //    var logger = sp.GetRequiredService<ILogger<DefaultRabbitMQPersistentConnection>>();
 
-            var factory = new ConnectionFactory()
-            {
-                HostName = Configuration["EventBusConnection"],
-                DispatchConsumersAsync = true
-            };
+        //    var factory = new ConnectionFactory()
+        //    {
+        //        HostName = Configuration["EventBusConnection"],
+        //        DispatchConsumersAsync = true
+        //    };
 
-            if (!string.IsNullOrEmpty(Configuration["EventBusUserName"]))
-            {
-                factory.UserName = Configuration["EventBusUserName"];
-            }
+        //    if (!string.IsNullOrEmpty(Configuration["EventBusUserName"]))
+        //    {
+        //        factory.UserName = Configuration["EventBusUserName"];
+        //    }
 
-            if (!string.IsNullOrEmpty(Configuration["EventBusPassword"]))
-            {
-                factory.Password = Configuration["EventBusPassword"];
-            }
+        //    if (!string.IsNullOrEmpty(Configuration["EventBusPassword"]))
+        //    {
+        //        factory.Password = Configuration["EventBusPassword"];
+        //    }
 
-            var retryCount = 5;
-            if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
-            {
-                retryCount = int.Parse(Configuration["EventBusRetryCount"]);
-            }
+        //    var retryCount = 5;
+        //    if (!string.IsNullOrEmpty(Configuration["EventBusRetryCount"]))
+        //    {
+        //        retryCount = int.Parse(Configuration["EventBusRetryCount"]);
+        //    }
 
-            return new DefaultRabbitMQPersistentConnection(factory, logger, retryCount);
-        });
+        //    return new DefaultRabbitMQPersistentConnection(factory, logger, retryCount);
+        //});
 
 
-        RegisterEventBus(services);
+        //RegisterEventBus(services);
 
 
         services.AddCors(options =>
@@ -165,8 +171,8 @@ public class Startup
 
         var serviceProvider = new AutofacServiceProvider(container.Build());
 
-        // 把 serviceProvidor 设置成静态变量
-        services.AddGlobalContext(serviceProvider, Configuration);
+        // 把 serviceProvidor 设置成静态变量, 从全局访问ServiceProvider
+        services.AddGlobalContext(services.BuildServiceProvider(), Configuration);
 
         return serviceProvider;
     }
@@ -233,7 +239,7 @@ public class Startup
             });
         });
 
-        ConfigureEventBus(app);
+        //ConfigureEventBus(app);
     }
 
     //private void RegisterAppInsights(IServiceCollection services)

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Net6TemplateWebApi.Domain
+namespace Net6.Template.Domain
 {
     public class Class1
     {

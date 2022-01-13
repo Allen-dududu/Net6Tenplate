@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Net6TemplateWebApi.SDK.Responses
+namespace Net6.Template.SDK.Responses
 {
     public  class Forecast
     {

@@ -9,17 +9,17 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Net6Template", "Net6Template", "{699FF6A5-493B-4835-8A18-9AB23C124174}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Net6TemplateWebApi", "Services\Net6Template\Net6TemplateWebApi\Net6TemplateWebApi.csproj", "{C0F04E55-8FA4-4429-BD01-7A591BA0F030}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Net6.Template.WebApi", "Services\Net6Template\Net6TemplateWebApi\Net6.Template.WebApi.csproj", "{C0F04E55-8FA4-4429-BD01-7A591BA0F030}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Net6TemplateWebApi.SDK", "Services\Net6Template\Net6TemplateWebApi.SDK\Net6TemplateWebApi.SDK.csproj", "{17CA0DA1-B029-4D2D-99F1-AE116855CE48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Net6.Template.SDK", "Services\Net6Template\Net6TemplateWebApi.SDK\Net6.Template.SDK.csproj", "{17CA0DA1-B029-4D2D-99F1-AE116855CE48}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Net6TemplateWebApi.Repertory", "Services\Net6Template\Net6TemplateWebApi.Repertory\Net6TemplateWebApi.Repertory.csproj", "{A812BFD3-596B-4016-9845-21B476B40BA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Net6.Template.Repertory", "Services\Net6Template\Net6TemplateWebApi.Repertory\Net6.Template.Repertory.csproj", "{A812BFD3-596B-4016-9845-21B476B40BA7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{135ADBCE-6E27-4B74-8B29-3171C198288B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Util", "Services\Infrastructure\Infrastructure\Common.Util.csproj", "{83CD06B9-DA60-41EA-9476-CFAB3F98AFCA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Net6.Common.Util", "Services\Infrastructure\Infrastructure\Net6.Common.Util.csproj", "{83CD06B9-DA60-41EA-9476-CFAB3F98AFCA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Net6TemplateWebApi.Domain", "Services\Net6Template\Net6TemplateWebApi.Domain\Net6TemplateWebApi.Domain.csproj", "{80F04C77-4EEE-4A12-B144-B89BB5E1F4A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Net6.Template.Domain", "Services\Net6Template\Net6TemplateWebApi.Domain\Net6.Template.Domain.csproj", "{80F04C77-4EEE-4A12-B144-B89BB5E1F4A4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EventBus", "EventBus", "{2E9A5902-70E8-4790-A9A6-17D6F0059FAF}"
 EndProject

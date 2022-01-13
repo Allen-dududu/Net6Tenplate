@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Net6TemplateWebApi.Repertory
+namespace Net6.Template.Repertory
 {
     public interface ITodoRepertory
     {

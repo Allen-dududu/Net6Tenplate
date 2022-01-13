@@ -1,8 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
 using Net6TemplateWebApi.Infrastructure.ActionResults;
 using Net6TemplateWebApi.Infrastructure.Exceptions;
-using Net6TemplateWebApi.SDK.Requests;
-using Net6TemplateWebApi.SDK.Responses;
+using Net6.Template.SDK.Requests;
+using Net6.Template.SDK.Responses;
 
 namespace Net6TemplateWebApi.Controllers
 {
