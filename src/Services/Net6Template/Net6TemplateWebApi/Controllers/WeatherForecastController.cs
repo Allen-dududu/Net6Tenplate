@@ -24,7 +24,6 @@ namespace Net6TemplateWebApi.Controllers
         [HttpGet(Name = "GetWeatherForecast")]
         public ApiResponse<IEnumerable<WeatherForecast>> Get(int id)
         {
-            throw new Net6TemplateWebApiDomainException();
             _logger.LogInformation("getForecast");
             var data = Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
